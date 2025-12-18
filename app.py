@@ -31,10 +31,10 @@ dd1 = dcc.Dropdown(cities_df.name,
 
 # make values different than labels for easier processing
 options=[
-       {'label': '5 Largest Cities', 'value': 'large-5'},
-       {'label': '5 Smallest Cities', 'value': 'small-5'},
-       {'label': '10 Largest Cities', 'value': 'large-10'},
-       {'label': '10 Smallest Cities', 'value': 'small-10'},
+       {'label': '10 Largest', 'value': 'large-10'},
+       {'label': '10 Smallest', 'value': 'small-10'},
+       {'label': '5 Largest', 'value': 'large-5'},
+       {'label': '5 Smallest', 'value': 'small-5'},
    ]
 
 cb1 = dcc.Checklist(options, 
