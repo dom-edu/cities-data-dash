@@ -98,6 +98,12 @@ def update_scatter_geo(check_boxes, slider_val):
                      scope='usa',  
                      color='name', 
                      projection='albers usa') 
+    
+    # make US map bigger 
+    fig.update_layout(
+        width=1200,
+        height=800
+    )
     return fig
 
 
