@@ -47,13 +47,17 @@ graph1 = dcc.Graph(id="histo1")
 
 # graph to hold scatter geo
 graph2 = dcc.Graph(id="scattergeo1")
-# add layout
+
+# LAYOUT
 app.layout = [
     dd1,
     cb1,
     graph1,
     graph2
 ]
+
+
+# CALLBACKS
 
 @callback(
     Output('histo1','figure'),
