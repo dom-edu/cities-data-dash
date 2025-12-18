@@ -14,7 +14,7 @@ cities_df.sort_values(by="pop", ascending=False)
 cities_df.name = cities_df.name.str.strip()
 
 # instantiate dash
-app = Dash() 
+app = Dash(title="US Cities Data") 
 
 # COMPONENTS 
 
