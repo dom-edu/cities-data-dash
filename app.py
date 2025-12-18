@@ -25,19 +25,16 @@ dd1 = dcc.Dropdown(cities_df.name,
                    id="dd-city-sel",
                    multi=True)
 
-# Make a checklist with the following options 
-
-# 1. "show largest five countries by population"
-# 2. "show samllest five countries by population"
-
-# modify the callback function to display each thing accordingly when the checkbox is clicked 
-
-# Add check box here! 
+# Exercise: Add this graph to our dash app, 
+# make a callback function that updates the graph based on the check boxes
+# add two more options to the checkboxes called largest 10, smallest 10 cities
 
 # make values different than labels for easier processing
 options=[
-       {'label': '5 Largest Cities', 'value': 'large'},
-       {'label': '5 Smallest Cities', 'value': 'small'},
+       {'label': '5 Largest Cities', 'value': 'large-5'},
+       {'label': '5 Smallest Cities', 'value': 'small-5'},
+       {'label': '10 Largest Cities', 'value': 'large-10'},
+       {'label': '10 Smallest Cities', 'value': 'small-10'},
    ]
 
 cb1 = dcc.Checklist(options, 
@@ -71,13 +68,20 @@ def update_histo(cities_sel, check_boxes):
         filter_ = cities_df.name.isin(cities_sel)
         filtered_df = cities_df[filter_]
 
-    elif 'large' in check_boxes:
+    elif 'large-5' in check_boxes:
         # get top 5
         filtered_df = cities_df[:5]
 
-    elif 'small' in check_boxes:
+    elif 'small-5' in check_boxes:
         # get bottom 5 
         filtered_df = cities_df[-5:]
+
+    elif 'small-10' in check_boxes:
+        # get bottom 5 
+        filtered_df = cities_df[-10:]
+    elif 'large-10' in check_boxes:
+        # get bottom 5 
+        filtered_df = cities_df[:10]
 
     return px.bar(filtered_df, x='name', y='pop')
 
