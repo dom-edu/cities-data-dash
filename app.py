@@ -45,11 +45,14 @@ cb1 = dcc.Checklist(options,
 # graph to hold bar chart
 graph1 = dcc.Graph(id="histo1")
 
+# graph to hold scatter geo
+graph2 = dcc.Graph(id="scattergeo1")
 # add layout
 app.layout = [
     dd1,
     cb1,
     graph1,
+    graph2
 ]
 
 @callback(
@@ -86,6 +89,45 @@ def update_histo(cities_sel, check_boxes):
     return px.bar(filtered_df, x='name', y='pop')
 
 
+@callback(
+    Output('scattergeo1', 'figure'),
+    Input('cb-1', 'value')
+)
+def update_scatter_geo(check_boxes):
+
+    # DEBUG print("Checkboxes", check_boxes)
+    filtered_df = pd.DataFrame() 
+
+    # handle case when check boxes is undefined first
+    if not check_boxes:
+        # default is to filter by dropdown 
+        return  
+    
+    elif 'large-5' in check_boxes:
+        # get top 5
+        filtered_df = cities_df[:5]
+
+    elif 'small-5' in check_boxes:
+        # get bottom 5 
+        filtered_df = cities_df[-5:]
+
+    elif 'small-10' in check_boxes:
+        # get bottom 5 
+        filtered_df = cities_df[-10:]
+    elif 'large-10' in check_boxes:
+        # get bottom 5 
+        filtered_df = cities_df[:10]
+
+    # make scatter_geo accordingly
+    fig = px.scatter_geo(filtered_df, 
+                     lat="lat",
+                     lon="lon",
+                     size='pop',
+                     scope='usa',  
+                     color='name', 
+                     projection='albers usa') 
+
+    return fig
 
 if __name__ == '__main__':
     app.run(debug=True)
