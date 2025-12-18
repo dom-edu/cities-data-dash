@@ -58,8 +58,8 @@ graph2 = dcc.Graph(id="scattergeo1")
 app.layout = [
     dd1,
     cb1,
-    slider1,
     graph1,
+    slider1,
     graph2
 ]
 
