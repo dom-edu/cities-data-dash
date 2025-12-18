@@ -62,72 +62,68 @@ app.layout = [
 )
 def update_histo(cities_sel, check_boxes):
 
-    # DEBUG print("Checkboxes", check_boxes)
-    filtered_df = pd.DataFrame() 
-
-    # handle case when check boxes is undefined first
-    if not check_boxes:
-        # default is to filter by dropdown 
-        filter_ = cities_df.name.isin(cities_sel)
-        filtered_df = cities_df[filter_]
-
-    elif 'large-5' in check_boxes:
-        # get top 5
-        filtered_df = cities_df[:5]
-
-    elif 'small-5' in check_boxes:
-        # get bottom 5 
-        filtered_df = cities_df[-5:]
-
-    elif 'small-10' in check_boxes:
-        # get bottom 5 
-        filtered_df = cities_df[-10:]
-    elif 'large-10' in check_boxes:
-        # get bottom 5 
-        filtered_df = cities_df[:10]
-
-    return px.bar(filtered_df, x='name', y='pop')
-
+    new_df = filter_by_checkbox(cities_df, check_boxes, cities_sel)
+    return px.bar(new_df, x='name', y='pop')
 
 @callback(
     Output('scattergeo1', 'figure'),
     Input('cb-1', 'value')
 )
 def update_scatter_geo(check_boxes):
-
-    # DEBUG print("Checkboxes", check_boxes)
-    filtered_df = pd.DataFrame() 
-
-    # handle case when check boxes is undefined first
-    if not check_boxes:
-        # default is to filter by dropdown 
-        return  
-    
-    elif 'large-5' in check_boxes:
-        # get top 5
-        filtered_df = cities_df[:5]
-
-    elif 'small-5' in check_boxes:
-        # get bottom 5 
-        filtered_df = cities_df[-5:]
-
-    elif 'small-10' in check_boxes:
-        # get bottom 5 
-        filtered_df = cities_df[-10:]
-    elif 'large-10' in check_boxes:
-        # get bottom 5 
-        filtered_df = cities_df[:10]
-
     # make scatter_geo accordingly
-    fig = px.scatter_geo(filtered_df, 
+
+    # filter the dataframe by the checkboxes 
+    new_df = filter_by_checkbox(cities_df, check_boxes, [])
+
+    # make new geo scatter plot 
+    fig = px.scatter_geo(new_df, 
                      lat="lat",
                      lon="lon",
                      size='pop',
                      scope='usa',  
                      color='name', 
                      projection='albers usa') 
-
     return fig
+
+
+# HELPER FUNCTIONS  
+def filter_by_checkbox(df_, cbs, c_sel):
+    """
+    Docstring for filter_by_checkbox
+    
+    :param df_: DataFrame to Filter
+    :param cbs: CheckBox Keys 
+    """
+
+
+    # DEBUG print("Checkboxes", check_boxes)
+    filtered_df = pd.DataFrame() 
+
+    # handle case when check boxes is undefined first
+    if not cbs:
+       # default is to filter by dropdown 
+        filter_ = df_.name.isin(c_sel)
+        filtered_df = cities_df[filter_]
+    
+    elif 'large-5' in cbs:
+        # get top 5
+        filtered_df = df_[:5]
+
+    elif 'small-5' in cbs:
+        # get bottom 5 
+        filtered_df = df_[-5:]
+
+    elif 'small-10' in cbs:
+        # get bottom 5 
+        filtered_df = df_[-10:]
+    elif 'large-10' in cbs:
+        # get bottom 5 
+        filtered_df = df_[:10]
+    
+    return filtered_df
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
