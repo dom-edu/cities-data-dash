@@ -42,6 +42,12 @@ cb1 = dcc.Checklist(options,
                      id="cb-1")
 
 
+
+slider1 = dcc.Slider(0, 20, 5,
+               value=10,
+               id='slider-1'
+)
+
 # graph to hold bar chart
 graph1 = dcc.Graph(id="histo1")
 
@@ -52,10 +58,10 @@ graph2 = dcc.Graph(id="scattergeo1")
 app.layout = [
     dd1,
     cb1,
+    slider1,
     graph1,
     graph2
 ]
-
 
 # CALLBACKS
 
@@ -71,14 +77,19 @@ def update_histo(cities_sel, check_boxes):
 
 @callback(
     Output('scattergeo1', 'figure'),
-    Input('cb-1', 'value')
+    Input('cb-1', 'value'),
+    Input('slider-1', 'value')
 )
-def update_scatter_geo(check_boxes):
+def update_scatter_geo(check_boxes, slider_val):
     # make scatter_geo accordingly
+    
 
-    # filter the dataframe by the checkboxes 
+     # filter the dataframe by the checkboxes 
     new_df = filter_by_checkbox(cities_df, check_boxes, [])
 
+    # slider takes priority now
+    # because it's the last filtering to happen before we make the figure
+    new_df = filter_by_slider(cities_df, slider_val)    
     # make new geo scatter plot 
     fig = px.scatter_geo(new_df, 
                      lat="lat",
@@ -128,6 +139,11 @@ def filter_by_checkbox(df_, cbs, c_sel):
 
 
 
+def filter_by_slider(df_, slide_val):
+
+    # show me the top entries 
+    # i.e. df_[:5] shows me the first 5 entries
+    return df_[:slide_val]
 
 if __name__ == '__main__':
     app.run(debug=True)
