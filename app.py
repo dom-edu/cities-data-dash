@@ -12,7 +12,7 @@ app = Dash()
 
 # COMPONENTS 
 
-dd1 = dcc.Dropdown(['New York', 'Los Angeles', 'Chicago'], 
+dd1 = dcc.Dropdown(cities_df.name, 
                    placeholder="Select city...",
                    id="dd-city-sel",
                    multi=True)
